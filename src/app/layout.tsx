@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Inter, EB_Garamond } from "next/font/google";
+import { Inter, EB_Garamond, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
+import "./custom.css";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -12,9 +13,16 @@ const ebGaramond = EB_Garamond({
   subsets: ["latin"],
 });
 
+const ibmMono = IBM_Plex_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
+});
+
 export const metadata: Metadata = {
-  title: "POWER is Coming Soon - DWTG",
-  description: "Join the Gambit List for early access to launches, private releases, campaign drops, and future moves from Dami Wande The Great.",
+  title: "Crown & Vice — DWTG",
+  description:
+    "Every move is intentional. Join the Gambit List for early access to Crown & Vice, the debut fragrance from Dami Wande The Great.",
 };
 
 export default function RootLayout({
@@ -25,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.variable} ${ebGaramond.variable} antialiased`}
+        className={`${inter.variable} ${ebGaramond.variable} ${ibmMono.variable} antialiased`}
       >
         {children}
       </body>
