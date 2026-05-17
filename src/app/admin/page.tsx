@@ -1,9 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { collection, getDocs, query, orderBy } from "firebase/firestore";
-import { db } from "../../lib/firebase";
-import Papa from "papaparse";
+import { useState } from "react";
 
 interface WaitlistEntry {
   id: string;
@@ -11,62 +8,101 @@ interface WaitlistEntry {
   timestamp: Date | null;
 }
 
+interface WaitlistEntryResponse {
+  id: string;
+  email: string;
+  timestamp: string | null;
+}
+
 export default function AdminDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState("");
   const [entries, setEntries] = useState<WaitlistEntry[]>([]);
   const [loading, setLoading] = useState(false);
+  const [exporting, setExporting] = useState(false);
   const [error, setError] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (password === process.env.NEXT_PUBLIC_ADMIN_PASSWORD) {
-      setIsAuthenticated(true);
-      fetchData();
-    } else {
-      setError("Incorrect password");
-    }
+    const ok = await fetchData(password);
+    setIsAuthenticated(ok);
   };
 
-  const fetchData = async () => {
+  const fetchData = async (adminPassword: string) => {
     setLoading(true);
+    setError("");
+
     try {
-      const q = query(collection(db, "waitlist"), orderBy("timestamp", "desc"));
-      const querySnapshot = await getDocs(q);
-      const data: WaitlistEntry[] = [];
-      querySnapshot.forEach((doc) => {
-        const docData = doc.data();
-        data.push({
-          id: doc.id,
-          email: docData.email,
-          timestamp: docData.timestamp ? docData.timestamp.toDate() : null,
-        });
+      const response = await fetch("/api/admin/waitlist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ password: adminPassword }),
       });
+
+      const payload = await response.json().catch(() => null);
+      if (!response.ok) {
+        setError(payload?.error ?? "Failed to fetch data.");
+        return false;
+      }
+
+      const rawEntries: WaitlistEntryResponse[] = payload?.entries ?? [];
+      const data: WaitlistEntry[] = rawEntries.map((entry) => ({
+        id: entry.id,
+        email: entry.email,
+        timestamp: entry.timestamp ? new Date(entry.timestamp) : null,
+      }));
+
       setEntries(data);
+      return true;
     } catch (err) {
       console.error("Error fetching data:", err);
-      setError("Failed to fetch data. Ensure Firebase config is correct.");
+      setError("Failed to fetch data. Please try again.");
+      return false;
     } finally {
       setLoading(false);
     }
   };
 
-  const exportToCSV = () => {
-    const csvData = entries.map((entry) => ({
-      Email: entry.email,
-      "Signed Up At": entry.timestamp ? entry.timestamp.toLocaleString() : "Unknown",
-    }));
+  const exportToCSV = async () => {
+    setExporting(true);
+    setError("");
 
-    const csv = Papa.unparse(csvData);
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-    const link = document.createElement("a");
-    const url = URL.createObjectURL(blob);
-    link.setAttribute("href", url);
-    link.setAttribute("download", `dwtg_waitlist_${new Date().toISOString().split("T")[0]}.csv`);
-    link.style.visibility = "hidden";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    try {
+      const response = await fetch("/api/admin/waitlist/export", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ password }),
+      });
+
+      if (!response.ok) {
+        const payload = await response.json().catch(() => null);
+        setError(payload?.error ?? "Failed to export data.");
+        return;
+      }
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      const fileName = `dwtg_waitlist_${new Date().toISOString().split("T")[0]}.csv`;
+
+      link.setAttribute("href", url);
+      link.setAttribute("download", fileName);
+      link.style.visibility = "hidden";
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error("Error exporting data:", err);
+      setError("Failed to export data. Please try again.");
+    } finally {
+      setExporting(false);
+    }
   };
 
   if (!isAuthenticated) {
@@ -95,8 +131,8 @@ export default function AdminDashboard() {
           <h1 className="title-sub" style={{ margin: 0 }}>Gambit List - Admin</h1>
           <p style={{ marginTop: "0.5rem" }}>Total Signups: {entries.length}</p>
         </div>
-        <button onClick={exportToCSV} className="cta-button" disabled={entries.length === 0}>
-          EXPORT CSV
+        <button onClick={exportToCSV} className="cta-button" disabled={entries.length === 0 || exporting}>
+          {exporting ? "EXPORTING..." : "EXPORT CSV"}
         </button>
       </div>
 

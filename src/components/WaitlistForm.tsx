@@ -1,8 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { db } from "../lib/firebase";
 
 export default function WaitlistForm() {
   const [email, setEmail] = useState("");
@@ -22,10 +20,22 @@ export default function WaitlistForm() {
     setErrorMessage("");
 
     try {
-      await addDoc(collection(db, "waitlist"), {
-        email,
-        timestamp: serverTimestamp(),
+      const response = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
       });
+
+      const payload = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        setStatus("error");
+        setErrorMessage(payload?.error ?? "Something went wrong. Please try again.");
+        return;
+      }
+
       setStatus("success");
     } catch (error: unknown) {
       console.error("Error adding document: ", error);
