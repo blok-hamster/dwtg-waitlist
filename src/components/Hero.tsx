@@ -40,7 +40,7 @@ export default function Hero() {
       <div className="section-inner">
         {/* Kicker */}
         <p className="hero-line font-mono" style={{ fontSize: "0.7rem", letterSpacing: "0.25em", textTransform: "uppercase", color: "#DE6F14", marginBottom: "2rem" }}>
-          A fragrance is coming
+          A fragrance duo is coming
         </p>
 
         {/* Logo mark */}
