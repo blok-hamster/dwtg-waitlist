@@ -22,7 +22,7 @@ const ibmMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: "Crown & Vice — DWTG",
   description:
-    "Every move is intentional. Join the Gambit List for early access to Crown & Vice, the debut fragrance from Dami Wande The Great.",
+    "Every move is intentional. Join The Gambit List for early access to Crown & Vice, the debut fragrance duo from Dami Wande The Great.",
 };
 
 export default function RootLayout({

@@ -17,7 +17,7 @@ export default function Footer() {
               style={{ height: "70px", width: "auto", objectFit: "contain", margin: "0 auto 1rem" }}
             />
             <p style={{ color: "rgba(118,8,8,0.3)", fontSize: "0.85rem", maxWidth: "300px", margin: "0 auto", lineHeight: 1.6 }}>
-              Crown & Vice — the debut fragrance from Dami Wande The Great. Two scents. One philosophy.
+              Crown & Vice — the debut fragrance duo from Dami Wande The Great. Two scents. One philosophy.
             </p>
           </div>
 

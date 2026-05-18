@@ -100,19 +100,19 @@ const steps = [
   {
     step: "I",
     title: "The Opening",
-    desc: "Every launch begins with restraint. We study the board — culture, timing, desire — before placing a single piece.",
+    desc: "Every move begins with restraint. We study the board, culture, timing, and desire before placing a single piece.",
     Visual: ChessMoves,
   },
   {
     step: "II",
     title: "The Gambit",
-    desc: "A deliberate sacrifice of hype for substance. Crown & Vice isn't marketed — it's discovered. The Gambit List is the only way in.",
+    desc: "A deliberate sacrifice of hype for substance. Crown & Vice are not announced. They are discovered. The Gambit List is the only way in.",
     Visual: ScentWave,
   },
   {
     step: "III",
     title: "The Endgame",
-    desc: "When the fragrance drops, it won't need to announce itself. Those on the list will already know.",
+    desc: "When the fragrances enter play, it won't feel like a reveal. Those on the list will have known it was coming.",
     Visual: AnticipationDots,
   },
 ];

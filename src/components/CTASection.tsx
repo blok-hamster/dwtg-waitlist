@@ -37,7 +37,11 @@ export default function CTASection() {
           Enter the <span className="font-drama">Gambit List.</span>
         </h2>
         <p style={{ color: "rgba(118,8,8,0.4)", marginTop: "1.25rem", fontSize: "0.9rem", maxWidth: "380px", margin: "1.25rem auto 0", lineHeight: 1.7 }}>
-          First access to Crown & Vice. Private releases. Campaign drops. Future moves from Dami Wande The Great.
+          First access to Crown & Vice.
+          <br />
+          Private releases. Campaign drops.
+          <br />
+          Future moves from Dami Wande The Great.
         </p>
 
         <div style={{ marginTop: "2.5rem", maxWidth: "360px", marginLeft: "auto", marginRight: "auto" }}>

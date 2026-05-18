@@ -65,8 +65,10 @@ export default function Hero() {
 
         {/* Sub */}
         <p className="hero-line" style={{ color: "rgba(118,8,8,0.5)", fontSize: "0.95rem", maxWidth: "420px", marginTop: "2rem", lineHeight: 1.7 }}>
-          Introducing Crown & Vice — the debut fragrance from Dami Wande The Great.
-          Two scents. One philosophy. Arriving soon.
+          Introducing Crown & Vice — the debut fragrance duo from Dami Wande The Great.
+          Two scents. One philosophy.
+          <br />
+          Arriving soon.
         </p>
 
         {/* CTA */}
@@ -77,7 +79,7 @@ export default function Hero() {
             style={{ padding: "1rem 2.5rem", borderRadius: "50px", fontSize: "0.85rem", fontWeight: 600, color: "#FFFFF0", backgroundColor: "#760808" }}
           >
             <span className="btn-slide" style={{ backgroundColor: "#DE6F14", borderRadius: "50px" }} />
-            <span style={{ position: "relative", zIndex: 10 }}>Join the Gambit List →</span>
+            <span style={{ position: "relative", zIndex: 10 }}>Join The Gambit List →</span>
           </button>
           <span className="font-mono" style={{ color: "rgba(118,8,8,0.25)", fontSize: "0.65rem", letterSpacing: "0.15em" }}>
             Early access only

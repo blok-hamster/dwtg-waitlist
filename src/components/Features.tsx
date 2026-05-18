@@ -7,45 +7,60 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 function FragranceReveal() {
-  const [active, setActive] = useState(0);
-  const layers = ["Top — Bergamot & Black Pepper", "Heart — Oud & Iris", "Base — Amber & Musk"];
+  const [activeNote, setActiveNote] = useState(0);
+  const noteBlocks = [
+    {
+      name: "Crown",
+      notes: [
+        { label: "Top Notes", value: "Rum, Bitter Orange, Grapefruit" },
+        { label: "Heart Notes", value: "Rose, Patchouli, Cedar" },
+        { label: "Base Notes", value: "Agarwood (Oud), Olibanum, Oakmoss" },
+      ],
+    },
+    {
+      name: "Vice",
+      notes: [
+        { label: "Top Notes", value: "Sandalwood, Saffron, Raspberry" },
+        { label: "Heart Notes", value: "Bergamot, Cashmeran, Lemon" },
+        { label: "Base Notes", value: "White musk, Rum, Tobacco" },
+      ],
+    },
+  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setActive((prev) => (prev + 1) % layers.length);
-    }, 2800);
+      setActiveNote((prev) => (prev + 1) % 3);
+    }, 2600);
     return () => clearInterval(interval);
   }, []);
 
   return (
-    <div style={{ position: "relative", height: "100px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-      {layers.map((layer, i) => {
-        const offset = ((i - active + layers.length) % layers.length);
-        return (
-          <div
-            key={layer}
-            className="font-mono"
-            style={{
-              position: "absolute",
-              width: "200px",
-              padding: "0.75rem 1rem",
-              borderRadius: "1rem",
-              border: "1px solid rgba(118,8,8,0.08)",
-              background: "#FFFFF0",
-              textAlign: "center",
-              fontSize: "0.7rem",
-              color: "rgba(118,8,8,0.6)",
-              transform: `translateY(${offset * 22}px) scale(${1 - offset * 0.04})`,
-              opacity: offset === 0 ? 1 : 0.35,
-              zIndex: layers.length - offset,
-              transition: "all 0.7s cubic-bezier(0.34,1.56,0.64,1)",
-              boxShadow: offset === 0 ? "0 6px 20px rgba(118,8,8,0.04)" : "none",
-            }}
-          >
-            {layer}
-          </div>
-        );
-      })}
+    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))", gap: "1.25rem", alignItems: "start" }}>
+      {noteBlocks.map((block) => (
+        <div key={block.name} style={{ textAlign: "left" }}>
+          <p className="font-mono" style={{ fontSize: "0.65rem", letterSpacing: "0.2em", textTransform: "uppercase", color: "rgba(118,8,8,0.5)", marginBottom: "0.6rem" }}>
+            {block.name}
+          </p>
+          {block.notes.map((note, index) => (
+            <p
+              key={note.label}
+              style={{
+                fontSize: "0.65rem",
+                color: index === activeNote ? "rgba(118,8,8,0.8)" : "rgba(118,8,8,0.45)",
+                lineHeight: 1.5,
+                marginBottom: "0.5rem",
+                transform: index === activeNote ? "translateX(4px)" : "translateX(0)",
+                transition: "all 0.6s ease",
+              }}
+            >
+              <span className="font-mono" style={{ letterSpacing: "0.1em", textTransform: "uppercase", color: "rgba(118,8,8,0.3)" }}>
+                {note.label}:
+              </span>{" "}
+              {note.value}
+            </p>
+          ))}
+        </div>
+      ))}
     </div>
   );
 }
@@ -65,7 +80,7 @@ function DualityPulse() {
       <div style={{ textAlign: "center", transition: "all 0.7s", opacity: side === "crown" ? 1 : 0.25, transform: side === "crown" ? "scale(1)" : "scale(0.92)" }}>
         <span style={{ fontSize: "1.75rem" }}>♔</span>
         <p className="font-mono" style={{ fontSize: "0.65rem", marginTop: "0.5rem", color: "rgba(118,8,8,0.5)" }}>Crown</p>
-        <p style={{ fontSize: "0.6rem", color: "rgba(118,8,8,0.25)", marginTop: "0.2rem" }}>Authority</p>
+        <p style={{ fontSize: "0.6rem", color: "rgba(118,8,8,0.25)", marginTop: "0.2rem" }}>Restraint</p>
       </div>
       <div style={{ width: "1px", height: "40px", background: "rgba(118,8,8,0.08)" }} />
       <div style={{ textAlign: "center", transition: "all 0.7s", opacity: side === "vice" ? 1 : 0.25, transform: side === "vice" ? "scale(1)" : "scale(0.92)" }}>
@@ -118,20 +133,26 @@ function CountdownPulse() {
 const cards = [
   {
     num: "01",
-    title: "Every Move is Intentional",
-    subtitle: "Strategic drops — no noise, no filler.",
-    Component: FragranceReveal,
+    title: "Duality by Design",
+    subtitle: "Two expressions of power: restraint and indulgence.",
+    Component: DualityPulse,
   },
   {
     num: "02",
-    title: "Duality by Design",
-    subtitle: "Two scents, one philosophy. Crown commands. Vice seduces.",
-    Component: DualityPulse,
+    title: "Every Move is Intentional",
+    subtitle: "Precision in every layer.",
+    Component: FragranceReveal,
   },
   {
     num: "03",
     title: "The Gambit List",
-    subtitle: "Early access. Private releases. You move first.",
+    subtitle: (
+      <>
+        Early access. Private releases.
+        <br />
+        You move first.
+      </>
+    ),
     Component: CountdownPulse,
   },
 ];
@@ -164,7 +185,9 @@ export default function Features() {
           The World
         </p>
         <h2 className="heading-serif" style={{ fontSize: "clamp(1.5rem, 4vw, 2.5rem)", fontWeight: 300, color: "#760808", marginBottom: "4rem", maxWidth: "500px", lineHeight: 1.3 }}>
-          A fragrance built on <span className="font-drama">strategy,</span> not spectacle.
+          Fragrances built on <span className="font-drama">strategy,</span>
+          <br />
+          not spectacle.
         </h2>
 
         <div className="cards-grid">

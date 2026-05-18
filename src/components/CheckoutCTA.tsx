@@ -27,10 +27,12 @@ export default function CheckoutCTA() {
           Now Available
         </p>
         <h2 className="heading-serif" style={{ fontSize: "clamp(1.5rem, 4vw, 2.25rem)", fontWeight: 300, color: "#FFFFF0", lineHeight: 1.2, marginBottom: "0.75rem" }}>
-          Crown & Vice is <span className="font-drama" style={{ color: "#DE6F14" }}>live.</span>
+          Crown & Vice is a hanging piece on the board.
         </h2>
         <p style={{ color: "rgba(255,255,240,0.5)", fontSize: "0.85rem", maxWidth: "380px", margin: "0 auto", lineHeight: 1.6 }}>
-          The debut fragrance is here. Limited first run — secure yours before it&apos;s gone.
+          Priority access for The Gambit List.
+          <br />
+          Your move.
         </p>
         <Link
           href="/checkout"

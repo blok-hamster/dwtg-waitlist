@@ -68,7 +68,7 @@ export default function Navbar() {
         style={{ padding: "0.5rem 1.25rem", borderRadius: "50px", fontSize: "0.75rem", fontWeight: 600, color: "#FFFFF0", backgroundColor: "#760808" }}
       >
         <span className="btn-slide" style={{ backgroundColor: "#DE6F14", borderRadius: "50px" }} />
-        <span style={{ position: "relative", zIndex: 10 }}>Join Gambit List</span>
+        <span style={{ position: "relative", zIndex: 10 }}>Join The Gambit List</span>
       </button>
     </nav>
   );
